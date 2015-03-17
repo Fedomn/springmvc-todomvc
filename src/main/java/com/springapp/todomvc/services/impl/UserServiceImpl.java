@@ -1,5 +1,6 @@
 package com.springapp.todomvc.services.impl;
 
+import com.springapp.todomvc.domain.User;
 import com.springapp.todomvc.repository.UserRepository;
 import com.springapp.todomvc.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
 
     @Override
-    public void save(String s) {
-        userRepository.save(s);
+    public void save(User user) {
+        userRepository.save(user);
     }
 }

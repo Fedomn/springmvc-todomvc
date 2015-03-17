@@ -1,13 +1,13 @@
 package com.springapp.todomvc.repository;
 
 
+import com.springapp.todomvc.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class UserRepository {
+@Transactional(readOnly = true)
+public interface UserRepository extends JpaRepository<User, Integer> {
 
-
-    public void save(String s) {
-        System.out.println(s);
-    }
 }

@@ -1,25 +1,26 @@
 package com.springapp.todomvc;
 
 
+import com.springapp.todomvc.domain.User;
 import com.springapp.todomvc.services.impl.UserServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.annotation.Resource;
+
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml")
+@ContextConfiguration("classpath:applicationContext.xml")
 public class UserTests{
 
-    @Autowired
-    private ApplicationContext context;
+    @Resource
+    private UserServiceImpl userService;
+
 
     @Test
     public void sayTest() {
-        UserServiceImpl userService1 = (UserServiceImpl) context.getBean("userServiceImpl");
-        userService1.save("test");
+        userService.save(new User("1", 2));
     }
 
 
