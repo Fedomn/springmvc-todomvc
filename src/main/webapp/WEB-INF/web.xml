@@ -14,7 +14,6 @@
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
 
-
 	<!--加载spring相关配置项-->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
