@@ -74,10 +74,11 @@ $(function () {
                 return;
             }
             $.ajax({
-                url: "/add",
+                url: "/user/add",
                 data: {title: title},
                 type: "POST",
                 success: function (jsonData) {
+                    console.log("add success");
                     var todo = JSON.parse(jsonData);
                     $("#todo-list").append(util.makeTodoList(todo.id, todo.title));
                     $input.val("");
