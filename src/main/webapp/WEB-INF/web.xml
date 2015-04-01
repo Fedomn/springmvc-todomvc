@@ -29,6 +29,7 @@
     <servlet>
 		<servlet-name>mvc-dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!--默认springMVC配置文件为：/WEB-INF/<servlet-name>-servlet.xml-->
         <load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
