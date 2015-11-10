@@ -1,7 +1,12 @@
 package com.springapp.todomvc.domain;
 
 
+import com.sun.tools.javac.comp.Todo;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -9,28 +14,29 @@ public class User {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    private String id;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "age")
-    private Integer age;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<ToDo> toDoList = new ArrayList<>();
 
     public User() {
     }
 
-    public User(String name, Integer age) {
+    public User(String name) {
         this.name = name;
-        this.age = age;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -42,11 +48,16 @@ public class User {
         this.name = name;
     }
 
-    public Integer getAge() {
-        return age;
+    public List<ToDo> getToDoList() {
+        return toDoList;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setToDoList(List<ToDo> toDoList) {
+        this.toDoList = toDoList;
     }
+
+    public void addToDo(ToDo toDo) {
+        toDoList.add(toDo);
+    }
+
 }

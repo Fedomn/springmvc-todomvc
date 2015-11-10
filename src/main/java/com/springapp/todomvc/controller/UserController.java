@@ -1,34 +1,52 @@
 package com.springapp.todomvc.controller;
 
 
+import com.springapp.todomvc.domain.ToDo;
 import com.springapp.todomvc.domain.User;
 import com.springapp.todomvc.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String printHello(ModelMap model) {
-        model.addAttribute("message", "hello");
-        return "index";
+    public ModelAndView showAllUsers() {
+        List<User> allUsers = userService.findAllUsers();
+        ModelAndView modelAndView = new ModelAndView("userList");
+        modelAndView.addObject("allUsers", allUsers);
+        return modelAndView;
     }
 
-    @RequestMapping(value = "add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public User add(@RequestParam("title") String title) {
-        System.out.println("/user/add");
-        return userService.save(new User(title, 123));
+    public User addUser(@RequestParam("user_name") String user_name) {
+        return userService.save(new User(user_name));
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String deleteUser(@RequestParam("user_id") String id) {
+        userService.deleteById(id);
+        return id;
+    }
+
+
+    @RequestMapping(value = "/{userName}/todos", method = RequestMethod.GET)
+    private ModelAndView showUserToDos(@PathVariable("userName") String name){
+        User user = userService.findByName(name);
+        ModelAndView modelAndView = new ModelAndView("userToDoList");
+        List<ToDo> userToDoLists = user.getToDoList();
+        modelAndView.addObject("userToDoList", userToDoLists);
+        modelAndView.addObject("userId", user.getId());
+        return modelAndView;
     }
 
 }

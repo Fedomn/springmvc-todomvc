@@ -1,78 +1,43 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+
 <html>
-
 <head>
-  <title>TodoMVC</title>
-  <link rel="stylesheet" href="<c:url value="/static/bower_components/todomvc-common/base.css"/>">
-  <link rel="stylesheet" href="<c:url value="/static/bower_components/todomvc-app-css/index.css"/>">
+  <title>TODO主页</title>
+  <link rel="stylesheet" type="text/css" href="<c:url value="/static/bower_components/todomvc-app-css/index.css" />" />
+  <link rel="stylesheet" href="<c:url value="/static/bower_components/bootstrap/dist/css/bootstrap.css" />" />
 </head>
+<body>
 
+<header id="header">
+  <h1>ToDos</h1>
+  <a href="users" class="btn btn-primary btn-sm" role="button">用户列表</a>
+  <a href="<c:url value="/j_spring_security_logout" />">Logout</a>
+</header>
 
-<body><h1>${message}</h1>
-<section id="todoapp">
-  <header id="header">
-    <h1>todos</h1>
-    <input id="new-todo" placeholder="What needs to be done?" autofocus>
-  </header>
+<section id="main" style="display: block;">
+  <ul id="todo-list">
 
-  <section id="main">
-    <input id="toggle-all" type="checkbox">
-
-    <ul id="todo-list">
-      <c:forEach items="${todolist}" var="todo">
-        <li
-                <c:choose>
-                  <c:when test="${todo.completed}"> class='completed' </c:when>
-                  <c:otherwise> class="active" </c:otherwise>
-                </c:choose>
-                data-id="${todo.id}">
-            <%--<li class="active" data-id="${todo.id}">--%>
-          <div class="view">
-            <input class="toggle" type="checkbox"
-            <c:choose>
-            <c:when test="${todo.completed}"> checked=true </c:when>
-              <c:otherwise></c:otherwise>
-            </c:choose>
-                    >
-            <label>${todo.title}</label>
-            <button class="destroy"></button>
-          </div>
-          <input class="edit" value="${todo.title}">
-        </li>
-      </c:forEach>
-    </ul>
-  </section>
-
-  <footer id="footer">
-    <span id="todo-count"><strong>${fn:length(todolist)}</strong> items left</span>
-    <ul id="filters">
-      <li>
-        <a href="/all">All</a>
+    <c:forEach items="${allToDos}" var="toDo">
+      <li data-id="${toDo.id}" ${toDo.completed==true? "class='completed'":""}>
+        <input class="hidden" value="${toDo.completed}">
+        <div class="view">
+          <label>${toDo.title}</label>
+          <button class="destroy"></button>
+        </div>
+        <input class="edit" value="${toDo.title}">
       </li>
-      <li>
-        <a href="/active">Active</a>
-      </li>
-      <li>
-        <a href="/completed">Completed</a>
-      </li>
-    </ul>
-    <button id="clear-completed">Clear completed</button>
-  </footer>
+    </c:forEach>
+
+  </ul>
 </section>
 
-
-
-
-<footer id="info">
-  <p>Double-click to edit a todo</p>
-  <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
-</footer>
-
-
-<script src="<c:url value="/static/bower_components/jquery/dist/jquery.min.js"/>"></script>
-<script src="<c:url value="/static/js/index.js"/>"></script>
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+<h1>The title only for Admin</h1>
+</sec:authorize>
+<script  src="<c:url value="/static/bower_components/jquery/dist/jquery.js" /> ></script>
 
 </body>
 </html>

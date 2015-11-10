@@ -20,7 +20,7 @@ public class UserTests{
 
     @Test
     public void sayTest() {
-        userService.save(new User("1", 2));
+        userService.save(new User("user"));
     }
 
 
